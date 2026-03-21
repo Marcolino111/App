@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherCities – Città Preferite</title>
+    <meta name="description" content="Gestisci le tue città preferite e visualizza le previsioni meteo.">
+    <link rel="stylesheet" href="style.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <!-- ══ AUTH VIEW ══ -->
+    <div id="auth-view" class="view">
+        <div class="auth-card">
+            <div class="auth-logo">⛅</div>
+            <h1 id="auth-title">Bentornato</h1>
+            <p class="subtitle" id="auth-subtitle">Accedi per gestire le tue città del meteo</p>
+
+            <form id="auth-form">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="nome@esempio.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <div id="auth-error" class="hidden"></div>
+                <button type="submit" id="auth-btn" class="btn-primary">Accedi</button>
+            </form>
+
+            <p class="auth-toggle-text" id="auth-toggle-text">
+                Non hai un account? <a href="#" id="toggle-auth-link" onclick="window.toggleAuthMode(event)">Registrati</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- ══ DASHBOARD VIEW ══ -->
+    <div id="dashboard-view" class="view hidden">
+
+        <!-- Header con tabs -->
+        <div class="app-header">
+            <div class="city-tabs-wrapper">
+                <div class="city-tabs" id="city-tabs"></div>
+                <button id="add-city-btn" class="add-tab-btn" title="Aggiungi città">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+            <div class="user-area">
+                <span id="user-display" class="user-email"></span>
+                <button id="logout-btn" class="btn-logout">Esci</button>
+            </div>
+        </div>
+
+        <!-- Modal aggiunta città -->
+        <div id="add-city-overlay" class="overlay hidden">
+            <div class="add-city-card">
+                <h3>Aggiungi una città</h3>
+                <form id="add-city-form">
+                    <input type="text" id="city-input" class="modal-input" placeholder="Es. Roma, Milano, New York..." autocomplete="off">
+                    <div id="city-error" class="hidden"></div>
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-add-btn" class="btn-secondary">Annulla</button>
+                        <button type="submit" id="add-city-submit" class="btn-primary">Aggiungi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Area meteo -->
+        <div class="weather-area">
+
+            <!-- Stato vuoto -->
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">🌍</div>
+                <p>Aggiungi una città per vedere le previsioni</p>
+                <button class="btn-primary" onclick="document.getElementById('add-city-btn').click()">+ Aggiungi Città</button>
+            </div>
+
+            <!-- Loading -->
+            <div id="weather-loading" class="weather-loading hidden">
+                <div class="spinner"></div>
+                <p>Caricamento meteo...</p>
+            </div>
+
+            <!-- Contenuto meteo -->
+            <div id="weather-content" class="hidden">
+
+                <!-- Meteo corrente -->
+                <div class="current-weather">
+                    <div class="current-main">
+                        <img id="current-icon" src="" alt="meteo" class="current-weather-icon">
+                        <div id="current-temp" class="current-temp">--°C</div>
+                    </div>
+                    <div id="current-desc" class="current-desc">--</div>
+                    <div id="current-info" class="current-info">--</div>
+                    <button id="delete-city-btn" class="btn-delete-city">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg>
+                        Rimuovi città
+                    </button>
+                </div>
+
+                <!-- Previsioni -->
+                <div id="forecast-container" class="forecast-container"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=4"></script>
+</body>
+</html>
