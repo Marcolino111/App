@@ -85,7 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             } else {
-                const { error } = await supabase.auth.signUp({ email, password });
+                const { error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: { emailRedirectTo: 'https://weatherappnew11.netlify.app' }
+                });
                 if (error) throw error;
                 showMsg(authError, 'Controlla la tua email per il link di conferma!', 'success-msg');
             }
