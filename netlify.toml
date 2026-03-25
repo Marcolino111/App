@@ -1,5 +1,4 @@
 [build]
-  publish = "static"
   functions = "netlify/functions"
 
 [[headers]]
